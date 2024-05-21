@@ -85,10 +85,17 @@ P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
 
--- TODO: This section contains all extensions I need for NVIM
--- - Wrap text in V-Mode with brackets
--- - nvim-tree for navigating file structures of a project
--- - Add custom keybindings to open and close nvim tree
+-- TODO: This section contains all open todos that I need for working efficiently with neovim
+-- General:
+-- - [ ] 
+-- Strapi:
+-- - [ ] Debugger for Strapi
+-- Flutter:
+-- - [ ] Flutter language server
+-- - [ ] Flutter debugger
+-- Whenever:
+-- - [ ] Go Language Server
+-- - [ ] Go Language Debugger
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -220,16 +227,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
+
 require('lazy').setup({
   -- NOTE: Plugins added on my own:
   {
@@ -240,14 +238,17 @@ require('lazy').setup({
     },
     opts = {
       sort = {
-          sorter = "case_sensitive",
-        },
-        view = {
-          width = 30,
-        },
-        renderer = {
-          group_empty = true,
-        },
+        sorter = "case_sensitive",
+      },
+      view = {
+        width = 40,
+      },
+      renderer = {
+        group_empty = true,
+      },
+      filters = {
+        dotfiles = false,
+      },
     },
   },
 
@@ -907,5 +908,11 @@ require('lazy').setup({
   },
 })
 
+-- NOTE: Custom keybinds are found here
+--
+vim.api.nvim_set_keymap('n', '<leader>tt', ':NvimTreeToggle<CR>', { noremap = true, silent = true , desc = 'Nvim [T]ree [T]oggle'})
+vim.api.nvim_set_keymap('n', '<leader>tf', ':NvimTreeFindFile<CR>', { noremap = true, silent = true , desc = 'Nvim [T]ree [F]ind File'})
+
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
