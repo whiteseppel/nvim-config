@@ -20,79 +20,24 @@
 =====================================================================
 =====================================================================
 
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-Kickstart Guide:
-
   TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
 
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know the Neovim basics, you can skip this step.)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua.
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-    This should be the first place you go to look when you're stuck or confused
-    with something. It's one of my favorite Neovim features.
-
-    MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-    which is very useful when you're not exactly sure of what you're looking for.
-
-  I have left several `:help X` comments throughout the init.lua
-    These are hints about where to find more information about the relevant settings,
-    plugins or Neovim features used in Kickstart.
-
-   NOTE: Look for lines like this
-
-    Throughout the file. These are for you, the reader, to help you understand what is happening.
-    Feel free to delete them once you know what you're doing, but they should serve as a guide
-    for when you are first encountering a few different constructs in your Neovim config.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
 
 -- TODO: This section contains all open todos that I need for working efficiently with neovim
 -- General:
+-- - [ ] Install a nerd font
+-- - [ ] Method for closing a fold
+-- - [ ] Open nvim with files from last edit
 -- - [ ] 
 -- Strapi:
 -- - [ ] Debugger for Strapi
 -- Flutter:
--- - [ ] Flutter language server
 -- - [ ] Flutter debugger
+-- - [ ] Action for always scrolling to bottom of log output
+-- - [ ] File with current run configuration for flutter
+-- - [ ] 
 -- Whenever:
 -- - [ ] Go Language Server
 -- - [ ] Go Language Debugger
@@ -226,7 +171,6 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure and install plugins ]]
 
 require('lazy').setup({
   -- NOTE: Plugins added on my own:
@@ -249,15 +193,27 @@ require('lazy').setup({
       filters = {
         dotfiles = false,
       },
+      diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+      }
     },
+  },
+
+  {
+      'akinsho/flutter-tools.nvim',
+      lazy = false,
+      dependencies = {
+          'nvim-lua/plenary.nvim',
+          -- 'stevearc/dressing.nvim', -- optional for vim.ui.select
+      },
+      config = true,
   },
 
   {
       'windwp/nvim-autopairs',
       event = "InsertEnter",
       config = true
-      -- use opts = {} for passing setup options
-      -- this is equalent to setup({}) function
   },
 
 
@@ -323,6 +279,8 @@ require('lazy').setup({
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        ['<leader>f'] = { name = '[F]lutter', _ = 'which_key_ignore' },
+        ['<leader>t'] = { name = 'Nvim [T]ree', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -456,9 +414,6 @@ require('lazy').setup({
       { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
       --
       -- LSP stands for Language Server Protocol. It's a protocol that helps editors
       -- and language tooling communicate in a standardized fashion.
@@ -643,8 +598,62 @@ require('lazy').setup({
 
       -- INFO:
       -- Dart LSP does not work with Mason
-      require('lspconfig').dartls.setup {}
+      -- flutter-tools.nvim does not work with dartls, thus it is commented out.
+      -- require('lspconfig').dartls.setup {}
     end,
+  },
+
+  {
+    'mfussenegger/nvim-dap',
+    config = function()
+    end,
+  },
+
+  -- NOTE: Flutter tools
+  {
+    'akinsho/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'stevearc/dressing.nvim', -- optional for vim.ui.select
+    },
+    config = function()
+      require("flutter-tools").setup {
+        -- NOTE: Enable debugger for flutter
+        debugger = {
+          enabled = true,
+          run_via_dap = false,
+          exception_breakpoints = {},
+          -- register_configurations = function(paths)
+          --   require("dap").configurations.dart = {
+          --     -- <put here config that you would find in .vscode/launch.json>
+          --   }
+          -- end,
+        },
+        widget_guides = {
+          enabled = true,
+        }
+      }
+    end,
+  },
+
+  {
+    'theHamsta/nvim-dap-virtual-text',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      require("nvim-dap-virtual-text").setup()
+    end
+  },
+
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
+    }
   },
 
   { -- Autoformat
@@ -908,10 +917,23 @@ require('lazy').setup({
   },
 })
 
--- NOTE: Custom keybinds are found here
---
+
+-- INFO: Nvim Tree keybinds
 vim.api.nvim_set_keymap('n', '<leader>tt', ':NvimTreeToggle<CR>', { noremap = true, silent = true , desc = 'Nvim [T]ree [T]oggle'})
-vim.api.nvim_set_keymap('n', '<leader>tf', ':NvimTreeFindFile<CR>', { noremap = true, silent = true , desc = 'Nvim [T]ree [F]ind File'})
+vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<CR>', { noremap = true, silent = true , desc = 'Nvim [T]ree [F]ind File'})
+
+-- INFO: Flutter tools keybinds
+vim.keymap.set('n', '<leader>fe', ':FlutterEmulators<CR>', { noremap = true, silent = true , desc = '[f]lutter [e]mulators'})
+vim.keymap.set('n', '<leader>fd', ':FlutterDevices<CR>', { noremap = true, silent = true , desc = '[f]lutter [d]evices'})
+vim.keymap.set('n', '<leader>fr', ':FlutterReload<CR>', { noremap = true, silent = true , desc = '[f]lutter hot [r]eload'})
+vim.keymap.set('n', '<leader>fR', ':FlutterRestart<CR>', { noremap = true, silent = true , desc = '[f]lutter [R]estart'})
+
+
+-- NOTE: not so sure is happy with this resize options
+vim.keymap.set('n', '<C-Up>', ':resize +2<CR>')
+vim.keymap.set('n', '<C-Down>', ':resize -2<CR>')
+vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>')
+vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>')
 
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 -- The line beneath this is called `modeline`. See `:help modeline`
