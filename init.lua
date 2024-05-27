@@ -28,8 +28,7 @@
 -- TODO: This section contains all open todos that I need for working efficiently with neovim
 -- General:
 -- - [ ] Install a nerd font
--- - [ ] Method for closing a fold
--- - [ ] Open nvim with files from last edit
+-- - [ ] Open nvim with files from last edit (do i really need it?)
 -- - [ ] 
 -- Strapi:
 -- - [ ] Debugger for Strapi
@@ -112,6 +111,18 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.opt.wrap = false
+vim.opt.sidescroll = 1
+vim.opt.sidescrolloff = 7
+
+vim.opt.foldenable = true
+-- Set fold method to syntax
+vim.opt.foldmethod = 'indent'
+-- Set initial fold level to open all folds
+vim.opt.foldlevel = 99
+-- Optional: Set fold column width (default is 0, which hides the fold column)
+vim.opt.foldcolumn = '1'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -192,6 +203,7 @@ require('lazy').setup({
       },
       filters = {
         dotfiles = false,
+        git_ignored = false,
       },
       diagnostics = {
         enable = true,
@@ -347,7 +359,11 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true,
+          }
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -484,6 +500,8 @@ require('lazy').setup({
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+          map('<leader>F', vim.lsp.buf.format, '[F]ormat')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
