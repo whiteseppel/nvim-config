@@ -27,6 +27,7 @@
 -- - [ ] Install a nerd font
 -- - [ ] Open nvim with files from last edit (do i really need it?)
 -- - [ ] open suggestions window (similar to strg + space in other editors)
+-- - [ ] File length indicator with error message (i want to see where in my file the error is)
 -- - [ ] 
 -- Strapi:
 -- - [ ] Debugger for Strapi

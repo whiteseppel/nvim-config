@@ -27,6 +27,7 @@ return {
   config = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
+    dap.set_log_level("DEBUG")
 
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
@@ -86,5 +87,93 @@ return {
 
     -- Install golang specific config
     require('dap-go').setup()
+
+    -- NOTE: die infos fürs aufsetzten von debug kommen hier her
+    --  Install the node debugger form microsoft
+      -- https://github.com/mxsdev/nvim-dap-vscode-js
+
+    -- dap.adapters.node2 = {
+    -- dap.adapters.node = {
+    --   type = 'executable',
+    --   command = 'node',
+    --   -- TODO: wo muss ich hier nochmal hinzeigen?
+    --   -- wahrscheinlich muss ich hier auf das repo des gebuildeten debug adapter zeigen
+    --   -- - Debug Adapter herunterladen und builden
+    --   -- - Pfad (in diesem fall hardcoded) einfügen
+    --   -- NOTE: Path for linux
+    --   -- args = {os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'},
+    --   args = {'C:\\Users\\jw\\StudioProjects\\vscode-debug\\vscode-js-debug\\out\\src\\nodeDebug.js'},
+    -- }
+    --
+    -- -- Javascript/Node
+    -- dap.configurations.javascript = {
+    --   {
+    --     name = 'Launch',
+    --     type = 'node2',
+    --     request = 'launch',
+    --     -- TODO: hier muss ich noch auf den richtigen befehl verweisen
+    --     -- program = '/home/dom/development/typescriptInfoJamesStrapi/node-modules/@strapi/strapi/bin/server.js develop',
+    --     program = 'C:\\Users\\jw\\StudioProjects\\typescriptInfoJamesStrapi\\node-modules\\@strapi\\strapi\\bin\\server.js develop',
+    --     cwd = vim.fn.getcwd(),
+    --     sourceMaps = true,
+    --     protocol = 'inspector',
+    --     console = 'integratedTerminal',
+    --   },
+    --   {
+    --     name = "Attach to strapi",
+    --     type = "node",
+    --     request = "attach",
+    --     port = "9230",
+    --     sourceMaps = true,
+    --     trace = true,
+    --   },
+    --   -- {
+    --   --   -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+    --   --   name = 'Attach to process',
+    --   --   type = 'node2',
+    --   --   request = 'attach',
+    --   --   processId = require'dap.utils'.pick_process,
+    --   -- },
+    -- }
+    --
+    -- -- Typescript/Node
+    -- dap.configurations.typescript = {
+    --   {
+    --     name = 'Launch',
+    --     type = 'node2',
+    --     request = 'launch',
+    --     -- NOTE: wtf ist das?
+    --     program = '${file}',
+    --     cwd = vim.fn.getcwd(),
+    --     protocol = 'inspector',
+    --     console = 'integratedTerminal',
+    --     runtimeArgs ={"run-script","develop"},
+    --     reAttach = true,
+    --     trace = true
+    --   },
+    --   {
+    --     name = "Attach to strapi",
+    --     type = "node",
+    --     request = "attach",
+    --     port = "9230",
+    --     -- processId = require'dap.utils'.pick_process,
+    --   },
+    --   -- Brauch ich nicht wirklich
+    --   -- {
+    --   --   name = "Attach to remote",
+    --   --   type = "node2",
+    --   --   request = "attach",
+    --   --   address = "192.168.148.2",--vim.fn.input("IP: ", "", "ip") -- <- remote address here
+    --   --   port = 9230
+    --   -- },
+    --   -- {
+    --   --   -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+    --   --   name = 'Attach to process',
+    --   --   type = 'node2',
+    --   --   request = 'attach',
+    --   --   processId = require'dap.utils'.pick_process,
+    --   -- },
+    -- }
+
   end,
 }
