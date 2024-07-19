@@ -28,13 +28,14 @@
 -- - [ ] Open nvim with files from last edit (do i really need it?)
 -- - [ ] open suggestions window (similar to strg + space in other editors)
 -- - [ ] File length indicator with error message (i want to see where in my file the error is)
+-- - [ ] Resize window (bigger and smaller)
 -- - [ ] 
 -- Strapi:
 -- - [ ] Debugger for Strapi
 -- Flutter:
 -- - [ ] Flutter debugger
--- - [ ] Action for always scrolling to bottom of log output
 -- - [ ] File with current run configuration for flutter
+-- - [ ] Option in flutter commands to cold boot the emulator
 -- - [ ] 
 -- Whenever:
 -- - [ ] Go Language Server

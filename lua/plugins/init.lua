@@ -1,9 +1,7 @@
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 
--- TODO:
---    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
+-- TODO: For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -31,9 +29,14 @@ require('lazy').setup({
     event = "InsertEnter",
     config = true
   },
+  {
+    "petertriho/nvim-scrollbar",
+    config = function()
+      require('scrollbar').setup()
+    end
+  },
 
 
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
@@ -48,10 +51,6 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-  --    require('gitsigns').setup({ ... })
-  --
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -65,22 +64,6 @@ require('lazy').setup({
       },
     },
   },
-
-
-  -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
-  --
-  -- This is often very useful to both group configuration, as well as handle
-  -- lazy loading plugins that don't need to be loaded immediately at startup.
-  --
-  -- For example, in the following configuration, we use:
-  --  event = 'VimEnter'
-  --
-  -- which loads which-key before all the UI elements are loaded. Events can be
-  -- normal autocommands events (`:help autocmd-events`).
-  --
-  -- Then, because we use the `config` key, the configuration only runs
-  -- after the plugin has been loaded:
-  --  config = function() ... end
 
   {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
@@ -101,39 +84,13 @@ require('lazy').setup({
     end,
   },
 
+  require('plugins.flutter-tools'),
   require('plugins.telescope'),
   require('plugins.lsp'),
   require('kickstart.plugins.debug'),
   -- TODO: still needs some work - debugger does not connect
   -- require('kickstart.plugins.debug_node'),
 
-  -- NOTE: Flutter tools
-  {
-    'akinsho/flutter-tools.nvim',
-    lazy = false,
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'stevearc/dressing.nvim',   -- optional for vim.ui.select
-    },
-    config = function()
-      require("flutter-tools").setup {
-        -- NOTE: Enable debugger for flutter
-        debugger = {
-          enabled = true,
-          run_via_dap = false,
-          exception_breakpoints = {},
-          -- register_configurations = function(paths)
-          --   require("dap").configurations.dart = {
-          --     -- <put here config that you would find in .vscode/launch.json>
-          --   }
-          -- end,
-        },
-        widget_guides = {
-          enabled = true,
-        }
-      }
-    end,
-  },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -266,7 +223,7 @@ require('lazy').setup({
     end,
   },
 
-  { -- colorscheme
+  {                  -- colorscheme
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
@@ -355,21 +312,6 @@ require('lazy').setup({
     end,
   },
 
-  -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
-  --
-  --  Here are some example plugins that I've included in the Kickstart repository.
-  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    This is the easiest way to modularize your config.
-  --
-  --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
