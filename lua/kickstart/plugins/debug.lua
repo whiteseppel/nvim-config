@@ -30,6 +30,7 @@ return {
     dap.set_log_level("DEBUG")
 
     require('mason-nvim-dap').setup {
+      automatic_installation = true,
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
       automatic_setup = true,
