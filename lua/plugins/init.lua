@@ -1,8 +1,6 @@
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 
--- TODO: For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -12,30 +10,28 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   -- NOTE: Plugins added on my own:
-  require('plugins.tree'),
+  require 'plugins.tree',
 
   {
     'akinsho/flutter-tools.nvim',
     lazy = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      -- 'stevearc/dressing.nvim', -- optional for vim.ui.select
     },
     config = true,
   },
 
   {
     'windwp/nvim-autopairs',
-    event = "InsertEnter",
-    config = true
+    event = 'InsertEnter',
+    config = true,
   },
   {
-    "petertriho/nvim-scrollbar",
+    'petertriho/nvim-scrollbar',
     config = function()
       require('scrollbar').setup()
-    end
+    end,
   },
-
 
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -65,32 +61,15 @@ require('lazy').setup({
     },
   },
 
-  {                     -- Useful plugin to show you pending keybinds.
-    'folke/which-key.nvim',
-    event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
-
-      -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>f'] = { name = '[F]lutter', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = 'Nvim [T]ree', _ = 'which_key_ignore' },
-      }
-    end,
-  },
-
-  require('plugins.flutter-tools'),
-  require('plugins.telescope'),
-  require('plugins.lsp'),
-  require('kickstart.plugins.debug'),
+  require 'plugins.flutter-tools',
+  require 'plugins.telescope',
+  require 'plugins.lsp',
+  -- require 'kickstart.plugins.debug',
+  require 'plugins.debug',
+  require 'plugins.which-key',
+  require 'plugins.lint',
   -- TODO: still needs some work - debugger does not connect
   -- require('kickstart.plugins.debug_node'),
-
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -122,7 +101,6 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
-      -- Snippet Engine & its associated nvim-cmp source
       {
         'L3MON4D3/LuaSnip',
         build = (function()
@@ -223,7 +201,7 @@ require('lazy').setup({
     end,
   },
 
-  {                  -- colorscheme
+  { -- colorscheme
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
@@ -298,8 +276,6 @@ require('lazy').setup({
       indent = { enable = true, disable = { 'ruby' } },
     },
     config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
@@ -311,7 +287,6 @@ require('lazy').setup({
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
-
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
