@@ -7,6 +7,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
     'leoluz/nvim-dap-go',
     'theHamsta/nvim-dap-virtual-text',
+
   },
 
   config = function()

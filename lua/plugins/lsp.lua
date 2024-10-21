@@ -1,17 +1,17 @@
-return { -- LSP Configuration & Plugins
+-- lsp.lua
+
+return {
     'neovim/nvim-lspconfig',
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-      -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
 
-      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
       { 'folke/neodev.nvim', opts = {} },
     },
+
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
@@ -47,51 +47,41 @@ return { -- LSP Configuration & Plugins
         end,
       })
 
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         lua_ls = {
-          -- cmd = {...},
-          -- filetypes = { ...},
-          -- capabilities = {},
           settings = {
             Lua = {
               completion = {
                 callSnippet = 'Replace',
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
+        },
           gopls = {},
           dockerls = {},
           dotls = {},
           jsonls = {},
-          tsserver = {},
+          -- NOTE: on my windows machine, having tsserver specified creates an error
+          -- tsserver = {},
           sqlls = {},
           yamlls = {},
           marksman = {},
-        },
+          -- INFO:
+          -- Dart LSP does not work with Mason
+          -- flutter-tools.nvim does not work with dartls, thus it is commented out.
+          -- require('lspconfig').dartls.setup {}
       }
 
       require('mason').setup()
 
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
+    -- NOTE: when wanting multiple language servers to be installed use this part here
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'gopls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -108,9 +98,5 @@ return { -- LSP Configuration & Plugins
         },
       }
 
-      -- INFO:
-      -- Dart LSP does not work with Mason
-      -- flutter-tools.nvim does not work with dartls, thus it is commented out.
-      -- require('lspconfig').dartls.setup {}
     end,
   }
