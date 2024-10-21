@@ -24,14 +24,12 @@
 
 -- TODO: This section contains all open todos that I need for working efficiently with neovim
 -- General:
--- - [ ] Open nvim with files from last edit (do i really need it?) -> open nvim, tpye <C-o> to go to latest file edit
 -- - [ ] Resize window (bigger and smaller)
 -- - [ ] Red dot for Breakpoints instead of the greyed out 'B'
 -- - [ ]
 -- Strapi:
 -- - [ ] Debugger for Strapi
 -- Flutter:
--- - [ ] Flutter debugger
 -- - [ ] Option in flutter commands to cold boot the emulator
 -- - [ ]
 -- Whenever:
