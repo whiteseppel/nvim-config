@@ -69,6 +69,7 @@ return {
       sqlls = {},
       yamlls = {},
       marksman = {},
+      prettier = {},
       -- INFO:
       -- Dart LSP does not work with Mason
       -- flutter-tools.nvim does not work with dartls, thus it is commented out.
@@ -82,7 +83,8 @@ return {
     vim.list_extend(ensure_installed, {
       'stylua',   -- Used to format Lua code
       'gopls',
-      'lua-language-server'
+      'lua-language-server',
+      'prettier',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
