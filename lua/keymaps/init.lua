@@ -25,42 +25,41 @@ vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>')
 vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>')
 
 vim.keymap.set('n', '<leader>ot', function()
-  -- Create a buffer for the terminal
-  local buf = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
+	-- Create a buffer for the terminal
+	local buf = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
 
-  -- Get the editor dimensions
-  local width = vim.o.columns
-  local height = vim.o.lines
+	-- Get the editor dimensions
+	local width = vim.o.columns
+	local height = vim.o.lines
 
-  -- Set floating window dimensions (adjust as needed)
-  local win_width = math.floor(width * 0.8)
-  local win_height = math.floor(height * 0.8)
-  local row = math.floor((height - win_height) / 2) -- Centered vertically
-  local col = math.floor((width - win_width) / 2)  -- Centered horizontally
+	-- Set floating window dimensions (adjust as needed)
+	local win_width = math.floor(width * 0.8)
+	local win_height = math.floor(height * 0.8)
+	local row = math.floor((height - win_height) / 2) -- Centered vertically
+	local col = math.floor((width - win_width) / 2)   -- Centered horizontally
 
-  -- Open the floating window
-  local win = vim.api.nvim_open_win(buf, true, {
-    relative = 'editor',
-    width = win_width,
-    height = win_height,
-    row = row,
-    col = col,
-    style = 'minimal',
-    border = 'double', -- Can be 'single', 'double', 'rounded', 'solid', or 'none'
-  })
+	-- Open the floating window
+	local win = vim.api.nvim_open_win(buf, true, {
+		relative = 'editor',
+		width = win_width,
+		height = win_height,
+		row = row,
+		col = col,
+		style = 'minimal',
+		border = 'rounded', -- Can be 'single', 'double', 'rounded', 'solid', or 'none'
+	})
 
-  -- Start a terminal in the buffer
-  vim.fn.termopen("powershell")
+	-- Start a terminal in the buffer
+	vim.fn.termopen("powershell")
 
-  -- Optional: Set the buffer to close when the terminal is exited
-  vim.api.nvim_create_autocmd("TermClose", {
-    buffer = buf,
-    callback = function()
-      vim.api.nvim_buf_delete(buf, { force = true })
-    end,
-  })
+	-- Optional: Set the buffer to close when the terminal is exited
+	vim.api.nvim_create_autocmd("TermClose", {
+		buffer = buf,
+		callback = function()
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end,
+	})
 
-  -- Focus the floating terminal window
-  vim.api.nvim_set_current_win(win)
-  vim.cmd.startinsert()
+	vim.api.nvim_set_current_win(win)
+	vim.cmd.startinsert()
 end)
