@@ -26,6 +26,7 @@
 -- General:
 -- - [ ] Resize window (bigger and smaller)
 -- - [ ] Red dot for Breakpoints instead of the greyed out 'B'
+-- - [ ] Git integration in my neovim
 -- - [ ]
 -- Strapi:
 -- - [ ] Debugger for Strapi

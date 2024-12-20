@@ -1,7 +1,7 @@
 return {
   'folke/which-key.nvim',
-  event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-  config = function() -- This is the function that runs, AFTER loading
+  event = 'VimEnter',
+  config = function()
     require('which-key').setup()
 
     require('which-key').add{
@@ -26,6 +26,9 @@ return {
 
       { '<leader>w', group = '[W]orkspace' },
       { '<leader>w_', hidden = true },
+
+      { '<leader>o', group = '[O]pen' },
+      { '<leader>o_', hidden = true },
     }
   end,
 }
