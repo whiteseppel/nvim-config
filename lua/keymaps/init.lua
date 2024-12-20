@@ -85,6 +85,15 @@ local function toggle_terminal(opts)
 
 	local win = vim.api.nvim_open_win(buf, true, win_config)
 
+	vim.api.nvim_create_autocmd("TermClose", {
+		buffer = buf,
+		callback = function()
+			if vim.api.nvim_buf_is_valid(buf) then
+				vim.api.nvim_buf_delete(buf, { force = true })
+			end
+		end,
+	})
+
 	return { buf = buf, win = win }
 end
 
@@ -101,4 +110,3 @@ vim.keymap.set('n', '<leader>ot',
 		end
 	end
 )
-
