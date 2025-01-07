@@ -48,6 +48,7 @@ require('lazy').setup({
   require 'plugins.debug',
   require 'plugins.which-key',
   require 'plugins.lint',
+  require 'plugins.lazygit',
 
   -- TODO: still needs some work - debugger does not connect
   -- require('kickstart.plugins.debug_node'),
