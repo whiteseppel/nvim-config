@@ -6,9 +6,10 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
+
 require('lazy').setup({
-  -- NOTE: Plugins added on my own:
-  require 'plugins.tree',
+
+
 
   {
     'windwp/nvim-autopairs',
@@ -42,6 +43,7 @@ require('lazy').setup({
     },
   },
 
+  require 'plugins.tree',
   require 'plugins.flutter-tools',
   require 'plugins.telescope',
   require 'plugins.lsp',
@@ -49,6 +51,7 @@ require('lazy').setup({
   require 'plugins.which-key',
   require 'plugins.lint',
   require 'plugins.lazygit',
+  require 'plugins.codecompanion',
 
   -- TODO: still needs some work - debugger does not connect
   -- require('kickstart.plugins.debug_node'),
@@ -229,7 +232,6 @@ require('lazy').setup({
       statusline.section_location = function()
         return '%2l:%-2v'
       end
-
     end,
   },
   { -- Highlight, edit, and navigate code
