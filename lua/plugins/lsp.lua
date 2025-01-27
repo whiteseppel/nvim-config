@@ -65,7 +65,7 @@ return {
       dotls = {},
       jsonls = {},
       -- NOTE: on my windows machine, having tsserver specified creates an error
-      -- tsserver = {},
+      ts_ls = {},
       sqlls = {},
       yamlls = {},
       marksman = {},

@@ -2,8 +2,6 @@
 
 ## Installation
 
-### Install Neovim
-
 ### Install External Dependencies
 
 External Requirements:
@@ -24,24 +22,6 @@ Neovim's configurations are located under the following paths, depending on your
 | Windows (cmd)| `%userprofile%\AppData\Local\nvim\` |
 | Windows (powershell)| `$env:USERPROFILE\AppData\Local\nvim\` |
 
-### Install Kickstart
-
-<details><summary> Windows </summary>
-
-If you're using `cmd.exe`:
-
-```
-git clone https://github.com/nvim-lua/kickstart.nvim.git %userprofile%\AppData\Local\nvim\
-```
-
-If you're using `powershell.exe`
-
-```
-git clone https://github.com/nvim-lua/kickstart.nvim.git $env:USERPROFILE\AppData\Local\nvim\
-```
-
-</details>
-
 ### Getting Started
 
 #### Windows Installation
@@ -59,6 +39,7 @@ This requires:
 {'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 ```
 </details>
+
 <details><summary>Windows with gcc/make using chocolatey</summary>
 Alternatively, one can install gcc and make which don't require changing the config,
 the easiest way is to use choco:
@@ -66,6 +47,7 @@ the easiest way is to use choco:
 1. install [chocolatey](https://chocolatey.org/install)
 either follow the instructions on the page or use winget,
 run in cmd as **admin**:
+
 ```
 winget install --accept-source-agreements chocolatey.chocolatey
 ```
@@ -75,6 +57,14 @@ open a new one so that choco path is set, and run in cmd as **admin**:
 ```
 choco install -y neovim git ripgrep wget fd unzip gzip mingw make
 ```
+
+3. additionally, we need the following packages installed with chocolatey:
+  - nvm (and later installing a version with it)
+  - go
+```
+choco install -y nvm golang
+```
+
 </details>
 <details><summary>WSL (Windows Subsystem for Linux)</summary>
 
