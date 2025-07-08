@@ -1,9 +1,9 @@
 -- INFO: Nvim Tree keybinds
 vim.api.nvim_set_keymap('n', '<leader>tt', ':NvimTreeToggle<CR>',
 	{ noremap = true, silent = true, desc = 'Nvim [T]ree [T]oggle' })
--- NOTE: is this keybind needed? configuration always shows me the current file in nvim tree
-vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<CR>',
-	{ noremap = true, silent = true, desc = 'Nvim [T]ree [F]ind File' })
+-- -- NOTE: is this keybind needed? configuration always shows me the current file in nvim tree
+-- vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<CR>',
+-- 	{ noremap = true, silent = true, desc = 'Nvim [T]ree [F]ind File' })
 
 -- INFO: Flutter tools keybinds
 vim.keymap.set('n', '<leader>fe', ':FlutterEmulators<CR>',
@@ -41,6 +41,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 		vim.highlight.on_yank()
 	end,
 })
+
+-- NOTE: open new terminal window on windows
+vim.keymap.set('n', '<leader>nt', function()
+	os.execute('wt -w 0 nt -d .')
+end, { desc = 'Open a [n]ew [t]erminal' })
 
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -101,7 +106,7 @@ vim.keymap.set('n', '<leader>ot',
 	function()
 		if not vim.api.nvim_win_is_valid(state.floating.win) then
 			state.floating = toggle_terminal { buf = state.floating.buf }
-			print(vim.inspect(state.floating))
+			-- print(vim.inspect(state.floating))
 			if vim.bo[state.floating.buf].buftype ~= "terminal" then
 				vim.fn.termopen("powershell")
 			end
