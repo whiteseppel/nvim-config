@@ -51,16 +51,9 @@ return {
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     local servers = {
-      lua_ls = {
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = 'Replace',
-            },
-          },
-        },
-      },
+      lua_ls = {},
       gopls = {},
+      jdtls = {},
       dockerls = {},
       dotls = {},
       jsonls = {},
@@ -70,6 +63,7 @@ return {
       yamlls = {},
       marksman = {},
       prettier = {},
+      xmlformatter = {},
       -- INFO:
       -- Dart LSP does not work with Mason
       -- flutter-tools.nvim does not work with dartls, thus it is commented out.
@@ -81,7 +75,7 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     -- NOTE: when wanting multiple language servers to be installed use this part here
     vim.list_extend(ensure_installed, {
-      'stylua',   -- Used to format Lua code
+      'stylua', -- Used to format Lua code
       'gopls',
       'lua-language-server',
       'prettier',
