@@ -87,6 +87,9 @@ sudo apt install make gcc ripgrep unzip neovim
 ```
 </details>
 
+#### Mac
+install ripgrep (brew install ripgrep)
+
 #### Installing a nerd font
 
 The nerd font should be automatically tracked in the .config repo.

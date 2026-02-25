@@ -6,10 +6,7 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
-
 require('lazy').setup({
-
-
 
   {
     'windwp/nvim-autopairs',
@@ -52,9 +49,31 @@ require('lazy').setup({
   require 'plugins.lint',
   require 'plugins.lazygit',
   require 'plugins.codecompanion',
+  require 'plugins.render-markdown',
 
   -- TODO: still needs some work - debugger does not connect
   -- require('kickstart.plugins.debug_node'),
+
+  {
+    'nvimtools/none-ls.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local null_ls = require 'null-ls'
+
+      null_ls.setup {
+        sources = {
+          null_ls.builtins.formatting.prettierd, -- use Prettierd
+        },
+        on_attach = function(client, bufnr)
+          if client.supports_method 'textDocument/formatting' then
+            vim.keymap.set('n', '<leader>F', function()
+              vim.lsp.buf.format { bufnr = bufnr }
+            end, { desc = 'Format with LSP/null-ls' })
+          end
+        end,
+      }
+    end,
+  },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -187,13 +206,11 @@ require('lazy').setup({
   },
 
   {
-    'folke/tokyonight.nvim',
-    priority = 1000,
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 100000,
     init = function()
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
-      vim.cmd.hi 'Comment gui=none'
+      vim.cmd.colorscheme 'catppuccin'
     end,
   },
 

@@ -6,7 +6,7 @@ return {
     'stevearc/dressing.nvim',
   },
   config = function()
-    require("flutter-tools").setup {
+    require('flutter-tools').setup {
       -- NOTE: Enable debugger for flutter
       decorations = {
         statusline = {
@@ -34,7 +34,7 @@ return {
       },
       widget_guides = {
         enabled = true,
-      }
+      },
     }
   end,
 }

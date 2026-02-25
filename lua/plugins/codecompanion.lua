@@ -24,25 +24,33 @@ return {
   },
 
   config = function()
-    require('codecompanion').setup {
+    local cc = require 'codecompanion'
+
+    cc.setup {
       strategies = {
-        chat = {
-          adapter = 'openai',
-        },
-        inline = {
-          adapter = 'openai',
-        },
+        chat = { adapter = 'openai' },
+        inline = { adapter = 'openai' },
       },
       adapters = {
-        openai = function()
-          return require('codecompanion.adapters').extend('openai', {
-            env = {
-              api_key = api_key,
-            },
-          })
-        end,
+        http = {
+          openai = function()
+            -- Extend the built-in OpenAI adapter
+            return require('codecompanion.adapters').extend('openai', {
+              env = {
+                api_key = api_key,
+              },
+              opts = {
+                -- Optional: customize model or base URL
+                model = 'gpt-5.1-codex',
+                -- base_url = 'https://api.openai.com/v1', -- defaults to this
+              },
+            })
+          end,
+        },
       },
     }
-    vim.keymap.set('n', '<leader>ai', ':CodeCompanionChat Toggle<CR>')
+
+    -- Keymap for toggling chat
+    vim.keymap.set('n', '<leader>ai', ':CodeCompanionChat Toggle<CR>', { desc = 'Toggle CodeCompanion Chat' })
   end,
 }

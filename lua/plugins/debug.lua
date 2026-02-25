@@ -7,7 +7,6 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
     'leoluz/nvim-dap-go',
     'theHamsta/nvim-dap-virtual-text',
-
   },
 
   config = function()
@@ -50,7 +49,6 @@ return {
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end, { desc = 'Debug: Set Breakpoint' })
 
-
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
     dapui.setup {
@@ -78,6 +76,17 @@ return {
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
+
+    -- Customize DAP breakpoint signs
+    vim.fn.sign_define('DapBreakpoint', { text = 'B', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
+    vim.fn.sign_define('DapBreakpointCondition', { text = 'C', texthl = 'DapBreakpointCondition', linehl = '', numhl = '' })
+    vim.fn.sign_define('DapStopped', { text = '→', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = '' })
+
+    -- Define highlight groups for breakpoint colors
+    vim.api.nvim_set_hl(0, 'DapBreakpoint', { link = 'Error' })
+    vim.api.nvim_set_hl(0, 'DapBreakpointCondition', { link = '@constant' })
+    vim.api.nvim_set_hl(0, 'DapStopped', { link = 'String' })
+    vim.api.nvim_set_hl(0, 'DapStoppedLine', { link = 'Visual' })
 
     -- Install golang specific config
     require('dap-go').setup()

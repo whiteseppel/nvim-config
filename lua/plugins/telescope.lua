@@ -52,14 +52,14 @@ return {
       pickers = {
         find_files = {
           hidden = false,
-        }
+        },
       },
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
       },
-      require('telescope').load_extension('flutter')
+      require('telescope').load_extension 'flutter',
     }
 
     -- Enable Telescope extensions if they are installed
@@ -101,5 +101,12 @@ return {
     vim.keymap.set('n', '<leader>sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[S]earch [N]eovim files' })
+
+    vim.keymap.set('n', '<leader>sb', function()
+      builtin.find_files {
+        cwd = vim.fn.expand '~/.config/knowledgebase',
+        prompt_title = 'Knowledgebase Files',
+      }
+    end, { desc = '[S]earch Knobledge[b]ase' })
   end,
 }

@@ -25,14 +25,12 @@
 -- TODO: This section contains all open todos that I need for working efficiently with neovim
 -- General:
 -- - [ ] Resize window (bigger and smaller)
--- - [ ] Red dot for Breakpoints instead of the greyed out 'B'
--- - [ ] Git integration in my neovim
--- - [ ] Add simple ai integration
+-- - [ ] Exclude specific folders from telescope
+-- - [ ] Git Blame with toggle option
 -- - [ ]
--- Strapi:
--- - [ ] Debugger for Strapi
 -- Flutter:
--- - [ ] Option in flutter commands to cold boot the emulator
+-- - [ ] Add configs for launching flutter (Flavours & runtime args)
+-- 		https://github.com/nvim-flutter/flutter-tools.nvim?tab=readme-ov-file#project-configuration
 -- - [ ]
 -- Whenever:
 -- - [ ]

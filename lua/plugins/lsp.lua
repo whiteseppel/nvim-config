@@ -6,10 +6,8 @@ return {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    { 'j-hui/fidget.nvim', opts = {} },
-
-    { 'folke/neodev.nvim', opts = {} },
+    'j-hui/fidget.nvim',
+    'folke/neodev.nvim',
   },
 
   config = function()
@@ -51,45 +49,79 @@ return {
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     local servers = {
+      -- gopls = {},
       lua_ls = {},
-      gopls = {},
-      jdtls = {},
       dockerls = {},
       dotls = {},
       jsonls = {},
-      -- NOTE: on my windows machine, having tsserver specified creates an error
-      ts_ls = {},
       sqlls = {},
-      yamlls = {},
-      marksman = {},
+      markdownlint = {},
       prettier = {},
       xmlformatter = {},
-      -- INFO:
-      -- Dart LSP does not work with Mason
-      -- flutter-tools.nvim does not work with dartls, thus it is commented out.
-      -- require('lspconfig').dartls.setup {}
+      ts_ls = {
+        on_attach = function(client)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+
+        -- NOTE: i have had issues with the vue project. i have already taken 3 hours to try and fix it ...
+        init_options = {
+          plugins = {
+            {
+              name = '@vue/typescript-plugin',
+              location = '/Users/josefweisboeck/.local/share/nvim/mason/packages/vue-language-server/node_modules/@vue/language-server',
+              languages = { 'typescript', 'javascript', 'vue' },
+            },
+          },
+        },
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+      },
+      yamlls = {
+        settings = {
+          redhat = { telemetry = { enabled = false } },
+          yaml = {
+            format = {
+              enable = true,
+              singleQuote = true, -- use single quotes
+              printWidth = 100,
+              proseWrap = 'preserve',
+              bracketSpacing = true,
+            },
+            validate = true,
+            hover = true,
+            completion = true,
+          },
+        },
+        on_attach = function(client)
+          client.server_capabilities.documentFormattingProvider = true
+        end,
+      },
     }
 
     require('mason').setup()
 
     local ensure_installed = vim.tbl_keys(servers or {})
-    -- NOTE: when wanting multiple language servers to be installed use this part here
+
     vim.list_extend(ensure_installed, {
-      'stylua', -- Used to format Lua code
-      'gopls',
+      'stylua',
       'lua-language-server',
       'prettier',
     })
+
+    -- from chatti
+    require('mason-lspconfig').setup {
+      ensure_installed = {},
+      automatic_installation = false,
+    }
+
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     require('mason-lspconfig').setup {
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for tsserver)
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+
           require('lspconfig')[server_name].setup(server)
         end,
       },
