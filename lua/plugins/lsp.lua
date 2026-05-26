@@ -68,9 +68,37 @@ return {
       },
       on_attach = function(client)
         -- Disable formatting for ts_ls so prettier/null-ls takes over
-        client.server_capabilities.documentFormattingProvider = false
+        -- client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
       end,
+    })
+
+    vim.lsp.config('volar', {
+      filetypes = { 'vue' },
+      on_attach = function(client)
+        -- Optionally disable formatting if prettier/null-ls handles it
+        -- client.server_capabilities.documentFormattingProvider = false
+      end,
+      init_options = {
+        typescript = {
+          tsdk = vim.fn.stdpath 'data' .. '/mason/packages/typescript-language-server/node_modules/typescript/lib',
+        },
+      },
+      settings = {
+        volar = {
+          format = {
+            enable = true,
+            options = {
+              semi = true,
+              singleQuote = true,
+              printWidth = 100, -- lines will wrap after this many chars
+              htmlWhitespaceSensitivity = 'ignore', -- preserves linebreaks
+            },
+          },
+        },
+        -- This actually delegates to Prettier for most <template> code.
+        -- You may need to tune the settings, e.g., try 'htmlWhitespaceSensitivity' = 'strict', 'ignore', or 'css' for various behaviors.
+      },
     })
 
     -- YAML with your specific formatting rules
@@ -103,7 +131,9 @@ return {
         'dockerls',
         'jsonls',
         'sqlls',
-        'volar', -- Important for Vue
+        'vue_ls', -- Important for Vue
+        -- 'volar', -- Important for Vue
+        -- 'vue-language-server',
         'ts_ls',
         'yamlls',
       },
