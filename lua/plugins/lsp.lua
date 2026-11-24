@@ -68,7 +68,7 @@ return {
       },
       on_attach = function(client)
         -- Disable formatting for ts_ls so prettier/null-ls takes over
-        -- client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
       end,
     })
@@ -108,7 +108,7 @@ return {
         yaml = {
           format = {
             enable = true,
-            singleQuote = true,
+            singleQuote = false,
             printWidth = 100,
             proseWrap = 'preserve',
             bracketSpacing = true,
@@ -135,6 +135,7 @@ return {
         -- 'volar', -- Important for Vue
         -- 'vue-language-server',
         'ts_ls',
+        'eslint',
         'yamlls',
       },
       automatic_enable = true,

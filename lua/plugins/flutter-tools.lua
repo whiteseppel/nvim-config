@@ -36,5 +36,22 @@ return {
         enabled = true,
       },
     }
+
+    -- flutter-tools guards ftplugin/dart with a buffer-local `flutter_tools_did_ftplugin`
+    -- that survives buffer reuse, so dartls never re-attaches after `:e`, a rename, or an
+    -- external edit. Re-run attach whenever a dart buffer ends up without a dartls client.
+    -- See https://github.com/nvim-flutter/flutter-tools.nvim/pull/527
+    vim.api.nvim_create_autocmd('BufReadPost', {
+      group = vim.api.nvim_create_augroup('flutter-lsp-reattach', { clear = true }),
+      pattern = '*.dart',
+      callback = function(event)
+        vim.schedule(function()
+          if not vim.api.nvim_buf_is_loaded(event.buf) then return end
+          if next(vim.lsp.get_clients { bufnr = event.buf, name = 'dartls' }) then return end
+          if vim.api.nvim_get_current_buf() ~= event.buf then return end
+          require('flutter-tools.lsp').attach()
+        end)
+      end,
+    })
   end,
 }

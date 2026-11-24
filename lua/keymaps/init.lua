@@ -5,6 +5,7 @@ vim.keymap.set('n', '<leader>fd', ':FlutterDevices<CR>', { noremap = true, silen
 vim.keymap.set('n', '<leader>fr', ':FlutterReload<CR>', { noremap = true, silent = true, desc = '[f]lutter hot [r]eload' })
 vim.keymap.set('n', '<leader>fR', ':FlutterRestart<CR>', { noremap = true, silent = true, desc = '[f]lutter [R]estart' })
 vim.keymap.set('n', '<leader>fq', ':FlutterQuit<CR>', { noremap = true, silent = true, desc = '[f]lutter [q]uit' })
+vim.keymap.set('n', '<leader>fl', ':FlutterLogToggle<CR>', { noremap = true, silent = true, desc = '[f]lutter [l]ogs' })
 vim.keymap.set('n', '<leader>co', ':FlutterRun --flavor chargeon<CR>', { noremap = true, silent = true, desc = 'Start [c]harge[O]n app' })
 
 local command = ':lua require("telescope").extensions.flutter.commands() <CR>'
